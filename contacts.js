@@ -1,13 +1,10 @@
 const fs = require("fs/promises");
-// OR  const fs = require("fs").promises;
 
 const path = require("path");
 const { v4: uuidv4 } = require("uuid");
 
 const contactsPath = path.join(__dirname, "db", "contacts.json");
-// OR const contactsPath = path.resolve( "db", "contacts.json");
 
-// =====================  ALL CONTACTS  ==================
 async function listContacts() {
   let contacts;
   await fs
@@ -17,9 +14,7 @@ async function listContacts() {
   // console.log(contacts);
   return contacts;
 }
-// listContacts();
 
-// =====================  GET CONTACT BY ID  ================
 async function getContactById(contactId) {
   const contacts = await listContacts();
   const result = contacts.find((contact) => contactId === contact.id);
@@ -29,9 +24,7 @@ async function getContactById(contactId) {
   }
   return result;
 }
-// getContactById("4");
 
-// =====================  ADD CONTACT  ==================
 async function addContact(name, email, phone) {
   const contacts = await listContacts();
   const newContact = {
@@ -42,7 +35,7 @@ async function addContact(name, email, phone) {
   };
   contacts.push(newContact);
   await fs.writeFile(contactsPath, JSON.stringify(contacts));
-  // console.table(contacts);
+
   return newContact;
 }
 const newContact = {
@@ -50,9 +43,7 @@ const newContact = {
   email: "kate.v@yahoo.com",
   phone: "123456789",
 };
-// addContact(newContact);
 
-// =====================  REMOVE CONTACT  ==================
 async function removeContact(contactId) {
   const contacts = await listContacts();
   const idx = contacts.findIndex((contact) => contact.id === contactId);
@@ -60,14 +51,12 @@ async function removeContact(contactId) {
     return null;
   }
   const [removedContact] = contacts.splice(idx, 1);
-  // console.log(contacts);
+
   await fs.writeFile(contactsPath, JSON.stringify(contacts));
-  // console.log(removedContact);
+
   return removedContact;
 }
-// removeContact("7");
 
-// =====================  UPDATE CONTACT BY ID  ==================
 async function updateById(id, data) {
   const contacts = await listContacts();
   const idx = contacts.findIndex((contact) => contact.id === id);
@@ -76,10 +65,9 @@ async function updateById(id, data) {
   }
   contacts[idx] = { ...data, id };
   await fs.writeFile(contactsPath, JSON.stringify(contacts));
-  // console.table(contacts);
+
   return contacts[idx];
 }
-// updateById("1", newContact);
 
 const contacts = {
   listContacts,
